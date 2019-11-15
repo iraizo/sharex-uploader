@@ -11,14 +11,21 @@ $dir = "p/"; // directory pictures are getting uploaded to
 
 
 class dbsettings { // you need to change all of this
-    public static $query = "SELECT * FROM `sharex`";
+    public $db = "sharex";
+    public $query;
     public static $server = "localhost";
     public static $user = "sharexadmin";
     public static $pass = "tessa";
-    public static $db = "sharex";
+
+    function __constructor()
+    {
+        $this->query = "SELECT * FROM `" . $this->db ."`"; // TODO: find a actual purpose for this rofl.
+    }
 }
 
-$connection = new mysqli(dbsettings::$server, dbsettings::$user, dbsettings::$pass, dbsettings::$db);
+
+
+$connection = new mysqli(dbsettings::$server, dbsettings::$user, dbsettings::$pass, dbsettings::$db); // TODO: use other framework because of sql injection
 
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
@@ -45,23 +52,35 @@ function getuserinfo($connection, $db, $uid, $row) {
 function TokenExists(string $token, $connection)
 {
 
-    $query = 'SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = "' . $connection->mysqli_escape_string($token). '"';
-    /*
+    $query = 'SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = "' . $token. '"';
     $result = $connection->query($query);
     $row = mysqli_fetch_array($result);
-    return $row["amount"] > 0;*/
-    echo $query;
-    return true;
-}   
+    return $row["amount"] > 0;
+}
 
 
 if(isset($_POST['token'])) {
-    //if(TokenExists($_POST['token'], dbsettings::$db, $connection)) {
     if(TokenExists($_POST['token'], $connection)) {
-        echo "Token exists in database";
+        if($randomstring) {
+            $filename = generateRandomString($length); // TODO MOVE THIS SO I DONT NEED TO REPEAT CODE
+            $target = $_FILES["x"]["name"];
+            $extension = pathinfo($target, PATHINFO_EXTENSION);
+
+            if (move_uploaded_file($_FILES["x"]["tmp_name"], $dir.$filename.'.'.$extension)) {
+                echo $url . $dir . $filename . '.' . $extension;
+            } else {
+                echo "Possible permission error contact the server administrator.";
+            }
+
+
+        } else {
+            // TODO: get file name from sharex and dont use generateRandomString
+        }
     } else {
-        echo "token dosent exist in database";
+        echo "Wrong Token contact the server administrator.";
     }
+} else {
+    echo "No post data received from client.";
 }
 
 $connection->close();
