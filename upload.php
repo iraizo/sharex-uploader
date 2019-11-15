@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ALL);
+
 $config = include("config.php");
 
 $url = $config['url'];
@@ -40,16 +42,21 @@ function getuserinfo($connection, $db, $uid, $row) {
     return $information;
 }
 
-function TokenExists(string $token, $connection) {
-    $query = 'SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = ' .$connection->mysqli_escape_string($token);
+function TokenExists(string $token, $connection)
+{
+
+    $query = 'SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = "' . $connection->mysqli_escape_string($token). '"';
+    /*
     $result = $connection->query($query);
     $row = mysqli_fetch_array($result);
-    return $row['amount'] > 0;
-}
+    return $row["amount"] > 0;*/
+    echo $query;
+    return true;
+}   
 
 
 if(isset($_POST['token'])) {
-    //if(TokenExists($_POST['token'], dbsettings::$db, $connection)) { 
+    //if(TokenExists($_POST['token'], dbsettings::$db, $connection)) {
     if(TokenExists($_POST['token'], $connection)) {
         echo "Token exists in database";
     } else {
