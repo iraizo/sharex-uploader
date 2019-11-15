@@ -11,12 +11,16 @@ $dir = "p/"; // directory pictures are getting uploaded to
 class dbsettings { // you need to change all of this
     public static $query = "SELECT * FROM `sharex`";
     public static $server = "localhost";
-    public static $user = "root";
-    public static $pass;
+    public static $user = "sharexadmin";
+    public static $pass = "tessa";
     public static $db = "sharex";
 }
 
+$connection = new mysqli(dbsettings::$server, dbsettings::$user, dbsettings::$pass, dbsettings::$db);
 
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
 
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -28,9 +32,6 @@ function generateRandomString($length) {
     return $randomString;
 }
 
-$connection = new mysqli(dbsettings::$server, dbsettings::$user, dbsettings::$pass, dbsettings::$db)
-    OR die(mysqli_error());
-
 function getuserinfo($connection, $db, $uid, $row) {
     $query = "SELECT * FROM $db WHERE UID=$uid";
     $result = $connection->query($query);
@@ -38,27 +39,22 @@ function getuserinfo($connection, $db, $uid, $row) {
     $information = $rowresult[$row];
     return $information;
 }
-function token_array($connection, $db) {
-    $query = "SELECT `UserPassword` FROM `sharex`";
+
+function TokenExists(string $token, $connection) {
+    $query = 'SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = ' .$connection->mysqli_escape_string($token);
     $result = $connection->query($query);
-    $token_array = array();
-
-    while($row = mysqli_fetch_array($result)) {
-        print($row['UserPassword']);
-        $token_array[] = $row['UserPassword'];
-    }
-    return $token_array;
+    $row = mysqli_fetch_array($result);
+    return $row['amount'] > 0;
 }
 
-$tokenlist = token_array($connection, dbsettings::$db);
+
 if(isset($_POST['token'])) {
-    if (in_array($_POST["token"], $tokenlist)) {
-        echo "token is in array";
-    }
-    else {
-        echo "not in array";
-        echo " Request: " .$_POST['token'] . " Array: " . $tokenlist;
+    //if(TokenExists($_POST['token'], dbsettings::$db, $connection)) { 
+    if(TokenExists($_POST['token'], $connection)) {
+        echo "Token exists in database";
+    } else {
+        echo "token dosent exist in database";
     }
 }
+
 $connection->close();
-?>
