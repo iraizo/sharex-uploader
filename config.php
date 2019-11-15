@@ -1,10 +1,9 @@
 <?php
-// TODO: EXPAND AND PUT EVERYTHING INTO HERE INSTEAD OF UPLOAD.PHP
-return array(
-    'url' => 'https://raizo.de/'
-)
 
-
-
+$config['url'] = 'https://raizo.de/';
+$config['db'] = 'changethis';
+$config['host'] = 'localhost';
+$config['user'] = 'changethis';
+$config['password'] = 'changethis';
 
 ?>
