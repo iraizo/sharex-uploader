@@ -1,6 +1,6 @@
 <?php
 
-$config['url'] = 'https://raizo.de/';
+$config['url'] = 'http://your-page.url/';
 $config['db'] = 'changethis';
 $config['host'] = 'localhost';
 $config['user'] = 'changethis';
