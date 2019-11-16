@@ -46,7 +46,7 @@ if(isset($_POST['token'])) {
             $extension = pathinfo($target, PATHINFO_EXTENSION);
 
             if (move_uploaded_file($_FILES["x"]["tmp_name"], $config['dir'].$filename.'.'.$extension)) {
-                echo $url . $config['dir'] . $filename . '.' . $extension;
+                echo $config['url'] . $config['dir'] . $filename . '.' . $extension;
             } else {
                 echo "Possible permission error contact the server administrator.";
             }
