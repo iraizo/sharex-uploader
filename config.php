@@ -6,7 +6,7 @@ return array(
     'server' => 'localhost',
     'user' => 'dbuser',
     'pass' => 'dbpass',
-    'directory' => 'p/,
+    'directory' => 'p/',
     'randomstringlength' => 5,
     'randomstring' => true,
 )
