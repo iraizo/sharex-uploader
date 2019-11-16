@@ -14,7 +14,7 @@ $length = $config['randomstringlength'];
 $randomstring = $config['randomstring'];
 
 try {
-$conndata = "mysql:host=$host;dbname=$db";
+$conndata = "mysql:host=$server;dbname=$db";
 $connection = new PDO($conndata, $user, $pass);
 $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
