@@ -63,3 +63,5 @@ if(isset($_POST['token'])) {
 }
 
 $connection->close();
+
+unset($config);
