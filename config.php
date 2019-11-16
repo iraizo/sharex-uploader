@@ -1,12 +1,13 @@
 <?php
 
-$config['url'] = 'http://your-page.url/';
-$config['db'] = 'changethis';
-$config['host'] = 'localhost';
-$config['user'] = 'changethis';
-$config['password'] = 'changethis';
-$config['randomstring'] = true;
-$config['length'] = 5;
-$config['dir'] = "p/";
-
+return array(
+    'url' => 'https://your-web.site/',
+    'db' => 'databasename',
+    'server' => 'localhost',
+    'user' => 'dbuser',
+    'pass' => 'dbpass',
+    'directory' => 'p/,
+    'randomstringlength' => 5,
+    'randomstring' => true,
+)
 ?>
