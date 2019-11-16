@@ -1,17 +1,13 @@
 <?php
-// TODO: EXPAND AND PUT EVERYTHING INTO HERE INSTEAD OF UPLOAD.PHP
+
 return array(
-    'url' => 'https://raizo.de/',
-    'db' => 'sharex',
+    'url' => 'https://your-web.site/',
+    'db' => 'databasename',
     'server' => 'localhost',
-    'user' => 'sharexadmin',
-    'pass' => 'tessa',
+    'user' => 'dbuser',
+    'pass' => 'dbpass',
     'directory' => 'p/',
     'randomstringlength' => 5,
     'randomstring' => true,
 )
-
-
-
-
-?>
+?> 
