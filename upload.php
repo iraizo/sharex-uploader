@@ -75,7 +75,7 @@ if(isset($_POST['token'])) {
     echo "No POST data received from client.";
 }
 
-//remove the connection and unset the db credentials
+//remove the connection and unset the db credentials AND config variable
 $connection = null;
 
-unset($config);
+unset($config, $db, $server, $user, $pass);
