@@ -39,10 +39,10 @@ try {
 
     function TokenExists(string $token, $connection)
     {
-        $stmt = $connection->prepare('SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = "' . $token . '"');
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result["amount"] > 0;
+    $query = $connection->prepare('SELECT COUNT(UserPassword) FROM sharex WHERE UserPassword = "?"');
+    $result = $query->execute(array($token));
+    $row = $query->fetchAll();
+    return $row > 0;
     }
 
 
