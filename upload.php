@@ -6,7 +6,7 @@ $config = include("config.php");
 
 $url = $config['url'];
 $db = $config['db'];
-$host = $config['host'];
+$server = $config['server'];
 $user = $config['user'];
 $pass = $config['pass'];
 $dir = $config['directory'];
