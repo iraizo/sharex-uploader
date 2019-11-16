@@ -2,13 +2,26 @@
 
 error_reporting(E_ALL);
 
-include "config.php";
+$config = include("config.php");
 
-$connection = new mysqli($config['host'], $config['user'], $config['password'], $config['db']); // TODO: use other framework because of sql injection (muh sql injection)
+$url = $config['url'];
+$db = $config['db'];
+$host = $config['host'];
+$user = $config['user'];
+$pass = $config['pass'];
+$dir = $config['directory'];
+$length = $config['randomstringlength'];
+$randomstring = $config['randomstring'];
 
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
+try {
+$conndata = "mysql:host=$host;dbname=$db";
+$connection = new PDO($conndata, $user, $pass);
+$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+	echo $e->getMessage();
+	die();
 }
+
 
 function generateRandomString($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -20,33 +33,33 @@ function generateRandomString($length) {
     return $randomString;
 }
 
+// I don't really know if this function works
 function getuserinfo($connection, $db, $uid, $row) {
-    $query = "SELECT * FROM $db WHERE UID=$uid";
-    $result = $connection->query($query);
-    $rowresult = mysqli_fetch_array($result);
-    $information = $rowresult[$row];
-    return $information;
+    $query = $connection->prepare("SELECT * FROM ? WHERE UID = ?");
+    $result = $query->execute(array($db, $uid));
+    $rowresult = $query->fetchAll();
+    return $rowresult;
 }
 
 function TokenExists(string $token, $connection)
 {
 
-    $query = 'SELECT COUNT(UserPassword) AS amount FROM sharex WHERE UserPassword = "' . $token. '"';
-    $result = $connection->query($query);
-    $row = mysqli_fetch_array($result);
-    return $row["amount"] > 0;
+    $query = $connection->prepare('SELECT COUNT(UserPassword) FROM sharex WHERE UserPassword = "?"');
+    $result = $query->execute(array($token));
+    $row = $query->fetchAll();
+    return $row > 0;
 }
 
 
 if(isset($_POST['token'])) {
     if(TokenExists($_POST['token'], $connection)) {
-        if($config['randomstring']) {
-            $filename = generateRandomString($config['length']); // TODO MOVE THIS SO I DONT NEED TO REPEAT CODE
+        if($randomstring) {
+            $filename = generateRandomString($length); // TODO MOVE THIS SO I DONT NEED TO REPEAT CODE
             $target = $_FILES["x"]["name"];
             $extension = pathinfo($target, PATHINFO_EXTENSION);
 
-            if (move_uploaded_file($_FILES["x"]["tmp_name"], $config['dir'].$filename.'.'.$extension)) {
-                echo $config['url'] . $config['dir'] . $filename . '.' . $extension;
+            if (move_uploaded_file($_FILES["x"]["tmp_name"], $dir.$filename.'.'.$extension)) {
+                echo $url . $dir . $filename . '.' . $extension;
             } else {
                 echo "Possible permission error contact the server administrator.";
             }
@@ -56,12 +69,13 @@ if(isset($_POST['token'])) {
             // TODO: get file name from sharex and dont use generateRandomString
         }
     } else {
-        echo "<h1>Wrong Token</h1><br> contact the server administrator.";
+        echo "Wrong Token\nContact server administrator";
     }
 } else {
-    echo "No post data received from client.";
+    echo "No POST data received from client.";
 }
 
-$connection->close();
+//remove the connection and unset the db credentials
+$connection = null;
 
 unset($config);
