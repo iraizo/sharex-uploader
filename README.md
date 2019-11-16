@@ -2,7 +2,7 @@
 A ShareX custom uploader made in PHP  
 Work in progress, made with PDO
 
-# I actually made it work
+# Setup
 - Create the database
 - Edit the config.php with your credentials and config
 - Create a table in db called "sharex"
