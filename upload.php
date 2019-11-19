@@ -27,16 +27,7 @@ try {
         }
         return $randomString;
     }
-
-    function getuserinfo($connection, $db, $uid, $row)
-    {
-
-        $stmt = $connection->prepare("SELECT * FROM $db WHERE UID=$uid");
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row["amount"] > 0;
-    }
-
+    
     function TokenExists(string $token, $connection)
     {
     $query = $connection->prepare('SELECT COUNT(UserPassword) FROM sharex WHERE UserPassword = "?"');
