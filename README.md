@@ -1,6 +1,6 @@
 # sharex-uploader
 A ShareX custom uploader made in PHP  
-Work in progress, made with PDO
+made with PDO.
 
 # Setup
 - Create the database
