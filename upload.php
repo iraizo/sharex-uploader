@@ -14,7 +14,7 @@ $length = $config['randomstringlength'];
 $randomstring = $config['randomstring'];
 
 try {
-    $connection = new PDO("mysql:host=localhost;dbname=sharex", "sharexadmin", "tessa"); //TODO USE THIS WITH CONFIGS
+    $connection = new PDO("mysql:host=localhost;dbname=example", "user", "pass"); //TODO USE THIS WITH CONFIGS
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     function generateRandomString($length)
@@ -52,7 +52,7 @@ try {
 
 
             } else {
-                // TODO: get file name from sharex and dont use generateRandomString
+                
             }
         } else {
             echo "Wrong Token contact the server administrator.";
